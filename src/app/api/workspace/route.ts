@@ -4,7 +4,7 @@ import { checkOrigin, errorResponse } from '@/lib/http';
 import { sessionToken } from '@/lib/session';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
-const workspace = (token: string | null) => ({ debates: token ? readVisibleDebates(token) : readDebates(), scoringConfigured: Boolean(process.env.XAI_API_KEY?.trim()), sharingEnabled: sharingEnabled() });
+const workspace = (token: string | null) => ({ debates: token ? readVisibleDebates(token) : readDebates(), scoringConfigured: Boolean(process.env.XAI_API_KEY?.trim()), sharingEnabled: sharingEnabled(), demoMode: process.env.DEMO_MODE === '1' });
 export async function GET(request: Request) {
   try {
     const session = sessionToken(request, true);
@@ -19,6 +19,7 @@ export async function POST(request: Request) {
     const body = await request.text();
     if (body.length > 40000) throw new AppError('This entry is too long.', 413);
     const command = commandSchema.parse(JSON.parse(body));
+    if (process.env.DEMO_MODE === '1' && command.action === 'publish') throw new AppError('Publishing is disabled in this temporary demo.', 400);
     const id = mutate(command, undefined, session.token ?? undefined);
     return Response.json({ ...workspace(session.token), id }, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) { return errorResponse(error); }

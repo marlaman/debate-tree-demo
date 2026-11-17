@@ -84,6 +84,7 @@ export function DebateApp() {
   }
   function beginNewDebate() {
     if (filling || scoring.size) { setError('Wait for the current arguments to finish scoring before starting a new debate.'); return; }
+    if (workspace.demoMode && active) { void finishDraft('discard'); return; }
     if (workspace.sharingEnabled && active && !active.publishedAt) { setPublishError(''); setPublishPrompt(true); return; }
     setActiveId(null); setSidebarOpen(false); setSelectedId(null); choose({ kind: 'debate' });
   }
@@ -93,7 +94,7 @@ export function DebateApp() {
     try {
       const result = await api<Workspace>('/api/workspace', action === 'publish' ? { action: 'publish', id: active.id } : { action: 'delete', entity: 'debate', id: active.id });
       setWorkspace(result); setPublishPrompt(false); setActiveId(null); setSidebarOpen(false); setSelectedId(null); choose({ kind: 'debate' });
-    } catch (e) { setPublishError(e instanceof Error ? e.message : 'Could not finish this debate.'); }
+    } catch (e) { const message = e instanceof Error ? e.message : 'Could not finish this debate.'; setPublishError(message); setError(message); }
     finally { setPublishBusy(false); }
   }
   function openNode(id: string) { setSelectedId(id); setComposerOpen(false); setWords(''); setDraft(null); setComposerError(''); }

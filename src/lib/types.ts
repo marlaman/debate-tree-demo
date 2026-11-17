@@ -3,7 +3,7 @@ export type Assessment = { score: number; explanation: string; strengths: string
 export type Argument = { id: string; stanceId: string; title: string; body: string; sources: Source[]; assessment: Assessment | null; model: string | null; scoredAt: string | null; error: string | null; scoringStarted: number | null; createdAt: string };
 export type Stance = { id: string; debateId: string; title: string; description: string; arguments: Argument[]; summary?: string | null; summaryKey?: string | null; summaryRevision?: string | null; summaryFresh?: boolean };
 export type Debate = { id: string; title: string; description: string; createdAt: string; publishedAt?: string | null; stances: Stance[] };
-export type Workspace = { debates: Debate[]; scoringConfigured: boolean; sharingEnabled?: boolean };
+export type Workspace = { debates: Debate[]; scoringConfigured: boolean; sharingEnabled?: boolean; demoMode?: boolean };
 export function asDebateQuestion(title: string): string {
   return `${title.trim().replace(/[?!.\s]+$/, '')}?`;
 }

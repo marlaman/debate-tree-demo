@@ -37,13 +37,17 @@ Data lives in `data/debates.sqlite` (SQLite WAL mode), outside source control. T
 
 By default this version is local and single-user, with no login. Set `PUBLIC_SHARING=1` to enable the anonymous publish flow described below.
 
-## Share publicly
+## Free friend demo
 
-`render.yaml` describes a Render web service with a persistent disk for SQLite. Push this project to a Git repository, create a Render Blueprint from it, and supply `XAI_API_KEY` in Render's environment-variable prompt. The Blueprint enables `PUBLIC_SHARING=1` and stores the database at `/var/data/debates.sqlite`; the local `data` directory and `.env.local` are ignored and are not uploaded.
+`render.yaml` uses Render's **Free** web service with no paid disk or managed database. Create a Render Blueprint from this repository and supply `XAI_API_KEY` through Render's environment-variable prompt. Do not upload `.env.local` or `data/`.
 
-In sharing mode, visitors get private anonymous drafts using an HttpOnly session cookie. Starting a new debate prompts them to publish the current draft as public read-only content or discard it. Unpublished drafts expire after seven days. Published debates are visible to everyone and cannot be edited or deleted through the app. Anonymous sessions are tied to the browser cookie; clearing it removes access to that browser's unpublished drafts.
+The demo keeps each visitor's temporary workspace separate using an anonymous cookie. Starting a new debate discards the current one; publishing is disabled. SQLite remains an embedded, free temporary store at `/tmp/debate-tree/debates.sqlite`, not a paid database service. Data is lost when Render restarts, redeploys, or spins down the server. Existing local data is untouched.
 
-This is intended for a small, trusted audience. The Grok key remains server-side, but visitors can still cause API usage charges. The Render service and disk use a paid plan.
+Render's free service sleeps after 15 minutes without traffic, so the first visit afterward can be slow. Stay on the Free plan; no persistent disk is needed. See https://render.com/docs/free for current free-tier limits.
+
+Hosting has no charge on this configuration. **Grok API calls are separate and can still cost money against your xAI account.** This does not make model usage free.
+
+For a local temporary demo, run with `PUBLIC_SHARING=1 DEMO_MODE=1 DEBATE_DB_PATH=/tmp/debate-tree/debates.sqlite npm run dev`.
 
 ## Checks
 
