@@ -2,7 +2,7 @@ services:
   - type: web
     name: debate-tree
     runtime: node
-    plan: starter
+    plan: 0.5c-512mb
     buildCommand: npm ci && npm run build
     startCommand: ./node_modules/.bin/next start --hostname 0.0.0.0 --port $PORT
     healthCheckPath: /
@@ -12,7 +12,7 @@ services:
       sizeGB: 1
     envVars:
       - key: NODE_VERSION
-        value: 24.3.0
+        value: 24.22.1
       - key: PUBLIC_SHARING
         value: "1"
       - key: DEBATE_DB_PATH
