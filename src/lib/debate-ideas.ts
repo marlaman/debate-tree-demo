@@ -1,0 +1,61 @@
+export const DEBATE_IDEAS = [
+  'Should voting be mandatory?',
+  'Should cities make public transport free?',
+  'Should students be allowed to use AI for homework?',
+  'Should social media platforms verify every user?',
+  'Should schools ban smartphones during the day?',
+  'Should governments tax meat to reduce emissions?',
+  'Should the working week be four days?',
+  'Should university education be free?',
+  'Should countries lower the voting age to 16?',
+  'Should museums return artifacts taken during colonial rule?',
+  'Should private cars be banned from city centers?',
+  'Should parents be allowed to homeschool without oversight?',
+  'Should political advertising be banned online?',
+  'Should professional athletes be paid the same across genders?',
+  'Should nuclear power be central to climate policy?',
+  'Should people have a legal right to disconnect after work?',
+  'Should cashless businesses be required to accept cash?',
+  'Should animal testing for medical research be prohibited?',
+  'Should public libraries lend more than books?',
+  'Should governments guarantee a basic income?',
+  'Should streaming services face limits on subscription price increases?',
+  'Should schools replace grades with written feedback?',
+  'Should every citizen be required to serve on a jury?',
+  'Should space exploration receive more public funding?',
+  'Should fast fashion face a special environmental tax?',
+  'Should cities limit short-term holiday rentals?',
+  'Should algorithms decide who receives public benefits?',
+  'Should employers be allowed to monitor remote workers?',
+  'Should high schools teach personal finance as a required subject?',
+  'Should governments restrict advertising aimed at children?',
+  'Should zoos exist?',
+  'Should public parks be free of commercial events?',
+  'Should cities charge drivers for entering busy areas?',
+  'Should news organizations be required to disclose AI-written stories?',
+  'Should healthcare workers have the right to strike?',
+  'Should countries phase out single-use plastics entirely?',
+  'Should universities consider applicants without standardized tests?',
+  'Should parents have access to their teenagers’ social media accounts?',
+  'Should internet access be treated as a public utility?',
+  'Should companies be required to publish salary ranges?',
+  'Should elected officials face term limits?',
+  'Should schools start later in the morning?',
+  'Should facial recognition be banned in public spaces?',
+  'Should people be able to sell their personal data?',
+  'Should governments subsidize home solar panels?',
+  'Should prisons focus more on rehabilitation than punishment?',
+  'Should public art be chosen by local residents?',
+  'Should restaurants be required to show the carbon footprint of meals?',
+  'Should children under 16 be barred from social media?',
+  'Should cities replace some roads with green space?',
+] as const;
+
+export function pickDebateIdeas(count = 3, random: () => number = Math.random): string[] {
+  const pool = [...DEBATE_IDEAS];
+  for (let index = 0; index < count; index++) {
+    const swap = index + Math.floor(random() * (pool.length - index));
+    [pool[index], pool[swap]] = [pool[swap], pool[index]];
+  }
+  return pool.slice(0, Math.min(count, pool.length));
+}

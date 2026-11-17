@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: debate-tree
+    runtime: node
+    plan: starter
+    buildCommand: npm ci && npm run build
+    startCommand: ./node_modules/.bin/next start --hostname 0.0.0.0 --port $PORT
+    healthCheckPath: /
+    disk:
+      name: debate-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_VERSION
+        value: 24.3.0
+      - key: PUBLIC_SHARING
+        value: "1"
+      - key: DEBATE_DB_PATH
+        value: /var/data/debates.sqlite
+      - key: XAI_API_KEY
+        sync: false
